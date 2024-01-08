@@ -6,6 +6,7 @@ use App\Models\Agence;
 use App\Models\Agent;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,7 +34,12 @@ class AgentController extends Controller
     public function create()
     {
         $agences = Agence::all();
-       $agents = Agent::with('agences')->orderBy('statutAgent', 'desc')->get();
+        if(Auth::user()->role == 'admin'){
+            $agents = Agent::with('agences')->orderBy('statutAgent', 'desc')->get();
+        }elseif(Auth::user()->role == 'delegue') {
+            $idAgence = Auth::user()->delegues->agence_id;
+            $agents = Agent::with('agences')->where('Agence', $idAgence)->orderBy('statutAgent', 'desc')->get();
+        }
 
         return view('agents.listeAgent', compact('agents', 'agences'));
     }
@@ -68,16 +74,19 @@ class AgentController extends Controller
                 } else {
                     $codeAgent= 'YM'.$prenomUn.$nomUn.($code->id+1);
                 }
+                if(Auth::user()->role == 'delegue'){
+                    $user = new User();
+                    $user->email = $request->input('mail');
+                    $user->password = Hash::make($request->input('password'));
+                    $user->role = 'agent';
+                    $user->save();
+                }
 
-                $user = new User();
-                $user->email = $request->input('mail');
-                $user->password = Hash::make($request->input('password'));
-                $user->role = 'agent';
-                $user->save();
-
+                // Recuperer l'id du delegue connecte
+                $idAgence = Auth::user()->delegues->agence_id;
                 $agent = new Agent;
                 $agent->codeAgent = $codeAgent;
-                $agent->agence = 1;
+                $agent->agence = $idAgence;
                 $agent->nomAgent = $request->input('nom');
                 $agent->prenomAgent = $request->input('prenom');
                 $agent->adresseAgent = $request->input('adresse');

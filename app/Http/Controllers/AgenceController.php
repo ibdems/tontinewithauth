@@ -14,7 +14,7 @@ class AgenceController extends Controller
      */
     public function index()
     {
-       
+
     }
 
     /**
@@ -69,7 +69,7 @@ class AgenceController extends Controller
         $validation = Validator::make($request->all(),[
             'MnomAgence'=>'required|min:3|max:70',
             'MadresseAgence'=>'required|min:3|max:40',
-            'MtelAgence'=>'required|min:9|max:20|',
+            'MtelAgence'=>'required|min:9|max:20',
             'MmailAgence'=>'required|email',
         ]);
 

@@ -34,6 +34,8 @@
                   <div class="col">
                         @if (Session::has('success'))
                              <div class="alert alert-success text-center fw-bold">{{Session::get("success")}}</div>
+                        @elseif(Session::has('error'))
+                            <div class="alert alert-danger text-center fw-bold">{{Session::get("error")}}</div>
                         @endif
                   </div>
                 </div>

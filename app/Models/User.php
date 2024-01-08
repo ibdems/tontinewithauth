@@ -42,4 +42,49 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function admins()
+    {
+        return $this->hasOne(Admin::class, 'user_id');
+    }
+    public function agences()
+    {
+        return $this->hasOne(Agence::class);
+    }
+
+    public function agents()
+    {
+        return $this->hasOne(Agent::class);
+    }
+
+    public function membres()
+    {
+        return $this->hasOne(Membre::class);
+    }
+
+    public function delegues()
+    {
+        return $this->hasOne(Delegue::class, 'user_id');
+    }
+
+    // Determination des roles de chaque utilisateur
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isDelegue()
+    {
+        return $this->role === 'delegue';
+    }
+
+    public function isAgent()
+    {
+        return $this->role === 'agent';
+    }
+
+    public function isMembre()
+    {
+        return $this->role === 'membre';
+    }
 }

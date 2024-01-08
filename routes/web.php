@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AgenceController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AuthentificationController;
+use App\Http\Controllers\CompteController;
 use App\Http\Controllers\CotisationController;
 use App\Http\Controllers\DelegueController;
 use App\Http\Controllers\HomeController;
@@ -32,19 +33,18 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('acceuil');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profil', [ProfilController::class, 'update'])->name('updateProfil');
+    Route::put('/profil', [ProfilController::class, 'updatePassword'])->name('updatePassword');
 });
-Route::get('/index',[HomeController::class, 'index'])->name('acceuil')->middleware('auth');
 
 // Les routes pour l'authentification;
-// Route::get('/', [AuthentificationController::class, 'login'])->name('auth.login');
+Route::get('/', [AuthentificationController::class, 'login'])->name('auth.login');
 // Route::post('/login', [AuthentificationController::class, 'dologin'])->name('seconnecter');
 // Route::delete('/logout', [AuthentificationController::class, 'logout'])->name('auth.logout');
 
@@ -173,6 +173,7 @@ Route::post('/TontineIndividuelles/Payement',[PayementIndividuelleController::cl
 
 // Route pour le profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+Route::get('/compte', [CompteController::class, 'create'])->name('compte.create');
 
 
 

@@ -23,7 +23,7 @@ class HomeController extends Controller
         $compteTindividuelle = Compte::groupBy('tontineIndividuelle')->sum('montantVerser');
         $compteCollectives = Compte::groupBy('tontineCollectives')->sum('montantVerser');
 
-        return view('index', compact('nombreAgent', 'nombreAgence', 'nombreMembre', 'tontineIndividuelleEncours', 'tontineIndividuelleTermine', 'tontineCollectivesEncours', 'tontineCollectivesTermine', 'compteTindividuelle', 'compteCollectives'));
+        return view('dashboard', compact('nombreAgent', 'nombreAgence', 'nombreMembre', 'tontineIndividuelleEncours', 'tontineIndividuelleTermine', 'tontineCollectivesEncours', 'tontineCollectivesTermine', 'compteTindividuelle', 'compteCollectives'));
     }
 
 
